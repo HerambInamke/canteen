@@ -1194,6 +1194,36 @@ footer a:hover {
     font-weight: 700;
 }
 
+/* Cart */
+.cart-item {
+    background: #2a2a2a;
+}
+.badge[data-cart-count] {
+    background: #ff6b35 !important;
+}
+
+/* Readability on dark cards */
+.card[style*="#2a2a2a"],
+.card[style*="rgb(42, 42, 42)"] {
+    color: #eaeaea !important;
+}
+.card[style*="#2a2a2a"] h1,
+.card[style*="#2a2a2a"] h2,
+.card[style*="#2a2a2a"] h3,
+.card[style*="#2a2a2a"] h4,
+.card[style*="#2a2a2a"] h5,
+.card[style*="#2a2a2a"] h6,
+.card[style*="#2a2a2a"] p,
+.card[style*="#2a2a2a"] span,
+.card[style*="#2a2a2a"] label,
+.card[style*="#2a2a2a"] small,
+.card[style*="#2a2a2a"] strong {
+    color: #eaeaea !important;
+}
+.text-muted {
+    color: #bbbbbb !important;
+}
+
 .filter-btn.active {
     background: #ff6b35 !important;
     border-color: #ff6b35 !important;

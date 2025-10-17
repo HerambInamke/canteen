@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
     initializeCharts();
+    initializeRevenueControls();
     updateTime();
     setInterval(updateTime, 1000); // Update time every second
 });
@@ -26,17 +27,52 @@ function updateTime() {
     }
 }
 
+function generateDateLabels(days) {
+    const labels = [];
+    const now = new Date();
+    for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(now.getDate() - i);
+        labels.push(days <= 1 ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString([], { month: 'short', day: 'numeric' }));
+    }
+    return labels;
+}
+
+function generateRevenueSeries(days) {
+    const series = [];
+    const base = 15000;
+    for (let i = 0; i < days; i++) {
+        const noise = Math.round((Math.sin(i / 3) + 1) * 4000 + Math.random() * 3000);
+        series.push(base + noise);
+    }
+    if (days === 1) {
+        // 24 hourly points for the single day view
+        const hourly = [];
+        for (let h = 0; h < 24; h++) {
+            const n = Math.round((Math.sin(h / 3) + 1) * 800 + Math.random() * 500);
+            hourly.push(500 + n);
+        }
+        return hourly;
+    }
+    return series;
+}
+
+let revenueChartInstance;
+
 function initializeCharts() {
     // Revenue Chart
     const revenueCtx = document.getElementById('revenueChart');
     if (revenueCtx) {
-        new Chart(revenueCtx, {
+        const defaultDays = 7;
+        const labels = generateDateLabels(defaultDays);
+        const dataSeries = generateRevenueSeries(defaultDays);
+        revenueChartInstance = new Chart(revenueCtx, {
             type: 'line',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels,
                 datasets: [{
                     label: 'Revenue (₹)',
-                    data: [12000, 19000, 15000, 25000, 22000, 30000, 28000],
+                    data: dataSeries,
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     tension: 0.4,
@@ -47,17 +83,13 @@ function initializeCharts() {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
-                    }
+                    legend: { display: false }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
-                                return '₹' + value.toLocaleString();
-                            }
+                            callback: function(value) { return '₹' + Number(value).toLocaleString(); }
                         }
                     }
                 }
@@ -130,6 +162,22 @@ function initializeCharts() {
             }
         });
     }
+}
+
+function initializeRevenueControls() {
+    const periodSelect = document.getElementById('revenuePeriod');
+    if (!periodSelect || !revenueChartInstance) return;
+    periodSelect.addEventListener('change', function() {
+        const days = parseInt(this.value, 10);
+        const isOneDay = days === 1;
+        const labels = isOneDay
+            ? Array.from({ length: 24 }, (_, h) => `${String(h).padStart(2,'0')}:00`)
+            : generateDateLabels(days);
+        const dataSeries = generateRevenueSeries(days);
+        revenueChartInstance.data.labels = labels;
+        revenueChartInstance.data.datasets[0].data = dataSeries;
+        revenueChartInstance.update();
+    });
 }
 
 // Quick action functions

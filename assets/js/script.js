@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeFeedbackForm();
     initializeAnimations();
     initializeSmoothScrolling();
+    initializeCartCount();
 });
 
 // Filter functionality for dashboard
@@ -240,12 +241,76 @@ function initializeSearch() {
     }
 }
 
-// Add to cart functionality (placeholder)
+// Cart utilities
+const CART_STORAGE_KEY = 'canteenhub_cart';
+
+function getCartItems() {
+    try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveCartItems(items) {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+}
+
+function generateItemId(name, price) {
+    return `${name}__${price}`.toLowerCase().replace(/\s+/g, '-');
+}
+
+function updateCartCount() {
+    const items = getCartItems();
+    const count = items.reduce((sum, item) => sum + item.quantity, 0);
+    const badgeEls = document.querySelectorAll('[data-cart-count]');
+    badgeEls.forEach(el => {
+        el.textContent = count;
+        el.style.display = count > 0 ? 'inline-block' : 'none';
+    });
+}
+
+function initializeCartCount() {
+    updateCartCount();
+}
+
+// Add to cart functionality
 function addToCart(dishName, price) {
+    const id = generateItemId(dishName, price);
+    const items = getCartItems();
+    const existing = items.find(it => it.id === id);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        items.push({ id, name: dishName, price: Number(price), quantity: 1 });
+    }
+    saveCartItems(items);
+    updateCartCount();
     showAlert(`${dishName} added to cart! Price: ₹${price}`, 'success');
-    
-    // In a real application, this would update a cart state
-    console.log(`Added to cart: ${dishName} - ₹${price}`);
+}
+
+// Cart page renderer helpers
+function removeFromCart(id) {
+    const items = getCartItems().filter(it => it.id !== id);
+    saveCartItems(items);
+    updateCartCount();
+}
+
+function setQuantity(id, quantity) {
+    const qty = Math.max(1, quantity);
+    const items = getCartItems();
+    const target = items.find(it => it.id === id);
+    if (target) {
+        target.quantity = qty;
+        saveCartItems(items);
+        updateCartCount();
+    }
+}
+
+function clearCart() {
+    saveCartItems([]);
+    updateCartCount();
 }
 
 // Favorites functionality (placeholder)
@@ -384,6 +449,10 @@ const debouncedSearch = debounce(function(searchTerm) {
 // Export functions for global use
 window.CanteenHub = {
     addToCart,
+    getCartItems,
+    removeFromCart,
+    setQuantity,
+    clearCart,
     toggleFavorite,
     filterByPrice,
     sortMenu,

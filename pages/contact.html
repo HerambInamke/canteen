@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - CanteenHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bites-nav">
+        <div class="container">
+            <a class="navbar-brand bites-logo" href="../index.html">
+                <span class="logo-main">CANTEENHUB</span>
+                <span class="logo-sub">COLLEGE CANTEEN</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto bites-nav-links">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">DASHBOARD</a></li>
+                    <li class="nav-item"><a class="nav-link" href="menu.html">MENU</a></li>
+                    <li class="nav-item"><a class="nav-link" href="feedback.html">FEEDBACK</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">ABOUT US</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contact.html">CONTACT US</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">CART <span class="badge bg-danger ms-1" data-cart-count style="display:none">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="py-5 mt-5" style="background:#1a1a1a; min-height:100vh;">
+        <div class="container">
+            <div class="row justify-content-center mb-4 text-center">
+                <div class="col-lg-8">
+                    <p class="section-subtitle-bites">we'd love to hear from you</p>
+                    <h1 class="section-title-bites">CONTACT US</h1>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card contact-item" style="background:#2a2a2a; border:1px solid #333;">
+                        <div class="card-body">
+                            <h5 class="mb-3"><i class="fas fa-info-circle me-2 text-primary"></i>Reach Us</h5>
+                            <p class="mb-2"><i class="fas fa-map-marker-alt me-2 text-warning"></i>College Canteen, Campus Dining Hall, New Delhi, India</p>
+                            <p class="mb-2"><i class="fas fa-phone me-2 text-success"></i>+91 98765 43210</p>
+                            <p class="mb-0"><i class="fas fa-envelope me-2 text-danger"></i>support@canteenhub.example</p>
+                            <hr class="my-4">
+                            <h6 class="mb-2">Working Hours</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li>Mon - Fri: 8:00 AM - 9:00 PM</li>
+                                <li>Sat - Sun: 9:00 AM - 8:00 PM</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card" style="background:#2a2a2a; border:1px solid #333;">
+                        <div class="card-body">
+                            <h5 class="mb-3"><i class="fas fa-paper-plane me-2 text-primary"></i>Send a Message</h5>
+                            <form id="contactForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Subject</label>
+                                    <input type="text" class="form-control" name="subject" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-control" rows="4" name="message" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 CanteenHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            window.CanteenHub.showAlert('Thanks! Your message has been sent (demo).', 'success');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
+
+
